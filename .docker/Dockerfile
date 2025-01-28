@@ -79,8 +79,10 @@ EXPOSE 80
 # Environment variables
 ENV APP_ENV="production"
 ENV APP_KEY="base64:/UnGygYvVBmIh+VgNhMj6MyI/ieXTtzUJsUL4OUtZGI="
-ENV DB_CONNECTION="pgsql"  # Default to PostgreSQL
-ENV DATABASE_URL="pgsql://user:password@db:5432/database"  # Update with your PostgreSQL credentials
+# Default to PostgreSQL
+ENV DB_CONNECTION="pgsql"  
+# Update with your PostgreSQL credentials
+ENV DATABASE_URL="pgsql://user:password@db:5432/database"  
 ENV APP_URL="http://127.0.0.1:8000"
 
 # Storage configuration
