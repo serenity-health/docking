@@ -20,6 +20,14 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy composer files
+COPY composer.json composer.lock ./
+
+# Install Composer dependencies (without dev dependencies)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Copy project files
 COPY . .
