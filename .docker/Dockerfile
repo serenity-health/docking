@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     nginx \
     wkhtmltopdf \
-    && apt-get clean \  # Clean up apt cache to reduce image size
+    && apt-get clean \ 
     && rm -rf /var/lib/apt/lists/*
 
 # Copy configuration files
