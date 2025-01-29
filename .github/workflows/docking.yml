@@ -31,14 +31,6 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build and push Docker - Normal Image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          file: .docker/Dockerfile
-          tags: serenityhealthtech/docking:latest
-
       -   name: Build and push Docker - Octane Image
           uses: docker/build-push-action@v6
           with:

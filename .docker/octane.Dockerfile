@@ -12,15 +12,38 @@ RUN apt-get update && apt-get install -y \
     unzip \
     supervisor \
     nginx \
-    wkhtmltopdf
+    wkhtmltopdf 
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo mbstring exif pcntl bcmath gd
+RUN apt-get install -y libpq-dev 
 
-# Copy project files
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install PHP extensions including pgsql and sockets
+RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd sockets
+
+# Set Composer environment variable
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Copy project files first
 COPY . .
 COPY ./.docker/docking-octane.conf /etc/supervisor/conf.d/
 COPY ./.docker/docking-host-octane.conf /etc/nginx/conf.d/default.conf
+
+
+# Run composer install after copying files
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+# Install NPM dependencies and build assets
+RUN npm install
+RUN npm run build
 
 RUN cp .docker/entrypoint.sh /entrypoint
 RUN chmod +x /entrypoint
@@ -49,8 +72,12 @@ EXPOSE 80 8080
 ############# Default app ENV
 ENV APP_ENV="production"
 ENV APP_KEY="base64:/UnGygYvVBmIh+VgNhMj6MyI/ieXTtzUJsUL4OUtZGI="
-ENV DB_CONNECTION="sqlite"
-ENV DATABASE_URL="sqlite:////var/www/html/docking.sqlite"
+ENV DB_CONNECTION="pgsql"
+ENV DB_HOST="postgres"
+ENV DB_PORT="5432"
+ENV DB_DATABASE="laravel"
+ENV DB_USERNAME="postgres"
+ENV DB_PASSWORD="secret"
 
 ############# Storage ENV
 

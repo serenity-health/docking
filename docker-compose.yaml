@@ -1,15 +1,15 @@
-version: '3.9'
-
 services:
   docking:
     build:
       context: .
       dockerfile: .docker/octane.Dockerfile
-    volumes:
-      - ./docking.sqlite:/var/www/html/database/docking.sqlite
-      - app_storage:/var/www/html/storage/app
-    environment:
-      DATABASE_URL: 'sqlite:////var/www/html/database/docking.sqlite'
+    # volumes:
+    #   - ./public:/var/www/html/public
+    # # volumes:
+    # #   - ./docking.sqlite:/var/www/html/database/docking.sqlite
+    #   - app_storage:/var/www/html/storage/app
+    # environment:
+    #   DATABASE_URL: 'sqlite:////var/www/html/database/docking.sqlite'
     links:
       - gotenberg
     ports:
