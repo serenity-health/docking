@@ -3,13 +3,14 @@ services:
     build:
       context: .
       dockerfile: .docker/octane.Dockerfile
-    # volumes:
-    #   - ./public:/var/www/html/public
-    # # volumes:
-    # #   - ./docking.sqlite:/var/www/html/database/docking.sqlite
-    #   - app_storage:/var/www/html/storage/app
+    volumes:
+      - app_storage:/var/www/html/storage/app
+      - ./app:/var/www/html/app
+      - ./routes:/var/www/html/routes
     # environment:
     #   DATABASE_URL: 'sqlite:////var/www/html/database/docking.sqlite'
+    env_file:
+      - .env
     links:
       - gotenberg
     ports:

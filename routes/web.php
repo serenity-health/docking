@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (config('docking.console-enabled')) {
+        return redirect('/console');
+    }
     return view('welcome');
 });
 
